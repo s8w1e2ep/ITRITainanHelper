@@ -41,7 +41,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
     // set Guide layout
     func setGuideLayout() {
         // set button
-        let btnCheck: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 210, height: 73))
+        let btnCheck: UIButton = UIButton(frame: CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.frame.size.width * 0.4, height: view.frame.size.width * 0.5 * 0.33))
         btnCheck.setTitle("確定", for: .normal)
         btnCheck.setTitleColor(UIColor.white, for: .normal)
         btnCheck.isEnabled = true
@@ -58,11 +58,11 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
         lbGuide.lineBreakMode = .byWordWrapping
         lbGuide.font = UIFont.systemFont(ofSize: 18)
         // set image
-        let imgHand: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 207, height: 255))
+        let imgHand: UIImageView = UIImageView(frame: CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: 188, height: 235))
         imgHand.image = UIImage(named: "up_down_hand.png")
         imgHand.center = CGPoint(x: view.frame.size.width * 0.7, y: view.frame.size.height * 0.7)
         // set guideOverlay
-        guideOverlay.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
+        guideOverlay.frame = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.frame.size.width, height: view.frame.size.height)
         guideOverlay.center = self.view.center
         guideOverlay.backgroundColor = UIColor(white: 0.0, alpha: 0.9)
         // add component to view
@@ -80,14 +80,14 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
     func setGeneralLayout() {
         self.tvNews.layoutMargins = UIEdgeInsets.zero
         // set overlay
-        overlay.frame = CGRect(x: 0, y: 0, width: view.frame.size.width * 0.8, height: 90)
+        overlay.frame = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.frame.size.width * 0.8, height: 90)
         overlay.center = self.view.center
         overlay.backgroundColor = UIColor.black
         overlay.alpha = 0.5
         overlay.layer.cornerRadius = 10
         overlay.clipsToBounds = true
         // set loading indicator
-        activityIndicator.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        activityIndicator.frame = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: 60, height: 60)
         activityIndicator.activityIndicatorViewStyle =
             UIActivityIndicatorViewStyle.white
         activityIndicator.center = CGPoint(x: overlay.frame.size.width / 2,
