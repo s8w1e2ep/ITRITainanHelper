@@ -55,7 +55,7 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
         btnCheck.isEnabled = true
         btnCheck.setBackgroundImage(UIImage(named: "instruction_button.png"), for: .normal)
         btnCheck.center = CGPoint(x: view.frame.size.width * 0.5, y: view.frame.size.height * 0.2)
-        btnCheck.addTarget(self, action: #selector(MessageViewController.checkClick), for: .touchUpInside)
+        btnCheck.addTarget(self, action: #selector(self.checkClick), for: .touchUpInside)
         // set label
         let lbGuide: UILabel = UILabel()
         lbGuide.bounds = CGRect(x: view.frame.size.width * 0.4 - 40, y: view.frame.size.height * 0.5 - 125, width: 80, height: 250)
