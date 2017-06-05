@@ -105,12 +105,12 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="8zh-3t-j1d" firstAttribute="top" secondItem="cSJ-DZ-qPf" secondAttribute="bottom" constant="1" id="420-OP-1ps"/>
                                                 <constraint firstItem="yJf-7d-inp" firstAttribute="centerY" secondItem="3N7-UW-XQ2" secondAttribute="centerY" id="6Od-HH-Rpm"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="8zh-3t-j1d" secondAttribute="trailing" constant="9" id="7P1-bw-Bnu"/>
                                                 <constraint firstItem="cSJ-DZ-qPf" firstAttribute="leading" secondItem="C7d-Gt-qXV" secondAttribute="leadingMargin" id="FWi-2x-40L"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="cSJ-DZ-qPf" secondAttribute="trailing" constant="12" id="K6T-Og-mxH"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="3N7-UW-XQ2" secondAttribute="bottom" constant="11" id="MMV-Si-9Q4"/>
+                                                <constraint firstItem="3N7-UW-XQ2" firstAttribute="top" secondItem="cSJ-DZ-qPf" secondAttribute="bottom" constant="15.5" id="MhW-gA-UO9"/>
                                                 <constraint firstItem="3N7-UW-XQ2" firstAttribute="leading" secondItem="yJf-7d-inp" secondAttribute="trailing" constant="2" id="Sb5-27-TWE"/>
                                                 <constraint firstItem="cSJ-DZ-qPf" firstAttribute="top" secondItem="C7d-Gt-qXV" secondAttribute="topMargin" constant="-9" id="hhJ-r7-BkM"/>
                                                 <constraint firstItem="yJf-7d-inp" firstAttribute="centerY" secondItem="8zh-3t-j1d" secondAttribute="centerY" id="ned-Lq-UZQ"/>
@@ -194,9 +194,6 @@
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8qf-4J-Xkc">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="603" id="kQp-sV-Mfr"/>
-                                </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="oqE-96-8rX" id="6eV-gy-uU2"/>
                                 </connections>

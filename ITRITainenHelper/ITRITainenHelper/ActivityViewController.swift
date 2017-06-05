@@ -13,18 +13,79 @@ import SQLite
 
 class ActivityViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var items = [ActivityRSSFormat]()
-    var hidesitems = [ActivityRSSFormat]()
-    let fullScreenSize = UIScreen.main.bounds.size
-    var overlay: UIView = UIView()
-    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
     @IBOutlet weak var tvActivity: UITableView!
     @IBOutlet weak var navigationbar: UINavigationBar!
     @IBOutlet weak var mswitch: UISwitch!
     
+    let fullScreenSize = UIScreen.main.bounds.size
+    let dbHelper = DatabaseHelper.init()
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+    var items = [ActivityRSSFormat]()
+    var hidesitems = [ActivityRSSFormat]()
+    var overlay: UIView = UIView()// black frame
+    var guideOverlay = UIView() // black frame
+    var isFirst = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        dbHelper.createHotTable()
+        
+        let defaults = UserDefaults.standard
+        let checkFirstLaunch = defaults.bool(forKey: "isAppFirstLaunch")
+        if (checkFirstLaunch == true) {
+            // is first launch
+            isFirst = true
+            setGuideLayout()
+        } else {
+            setGeneralLayout()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadActivity()
+    }
+    
+    func setGuideLayout() {
+        // set button
+        let btnCheck: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 210, height: 73))
+        btnCheck.setTitle("確定", for: .normal)
+        btnCheck.setTitleColor(UIColor.white, for: .normal)
+        btnCheck.isEnabled = true
+        btnCheck.setBackgroundImage(UIImage(named: "instruction_button.png"), for: .normal)
+        btnCheck.center = CGPoint(x: view.frame.size.width * 0.5, y: view.frame.size.height * 0.2)
+        btnCheck.addTarget(self, action: #selector(self.checkClick), for: .touchUpInside)
+        // set label
+        let lbGuide: UILabel = UILabel()
+        lbGuide.bounds = CGRect(x: view.frame.size.width * 0.4 - 40, y: view.frame.size.height * 0.5 - 125, width: 80, height: 250)
+        lbGuide.center = CGPoint(x: view.frame.size.width * 0.4, y: view.frame.size.height * 0.5)
+        lbGuide.text = "上\n下\n滑\n動\n以\n瀏\n覽\n內\n容"
+        lbGuide.textColor = UIColor.white
+        lbGuide.numberOfLines = 0
+        lbGuide.lineBreakMode = .byWordWrapping
+        lbGuide.font = UIFont.systemFont(ofSize: 18)
+        // set image
+        let imgHand: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 207, height: 255))
+        imgHand.image = UIImage(named: "up_down_hand.png")
+        imgHand.center = CGPoint(x: view.frame.size.width * 0.7, y: view.frame.size.height * 0.7)
+        // set guideOverlay
+        guideOverlay.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
+        guideOverlay.center = self.view.center
+        guideOverlay.backgroundColor = UIColor(white: 0.0, alpha: 0.9)
+        // add component to view
+        guideOverlay.addSubview(btnCheck)
+        guideOverlay.addSubview(lbGuide)
+        guideOverlay.addSubview(imgHand)
+        view.addSubview(guideOverlay)
+    }
+    
+    func checkClick() {
+        self.guideOverlay.removeFromSuperview()
+    }
+    
+    // set gerneral layout
+    func setGeneralLayout() {
         self.tvActivity.layoutMargins = UIEdgeInsets.zero
         // set overlay
         overlay.frame = CGRect(x: 0,y: 0, width: view.frame.size.width * 0.8, height: 90)
@@ -41,11 +102,6 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
         overlay.addSubview(activityIndicator)
         self.view.addSubview(overlay)
         activityIndicator.startAnimating()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        loadActivity()
     }
     
     func loadActivity(){

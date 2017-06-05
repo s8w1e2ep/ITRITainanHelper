@@ -8,59 +8,47 @@
 
 import UIKit
 
-class NewsDetailViewController: UIViewController, UIWebViewDelegate {
+class NewsDetailViewController: UIViewController, UIScrollViewDelegate {
     
-    @IBOutlet weak var webNews: UIWebView!
+    @IBOutlet weak var svContent: UIScrollView!
+    var lbContent = UILabel()
     
-    var webLink: String! = "https://www.google.com.tw"
+    var content: String! = "Surprise! I'm back."
     var overlay = UIView()
-    var loading: UIActivityIndicatorView = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // set overlay
-        overlay.frame = CGRect(x: 0, y: 0, width: view.frame.size.width * 0.8, height: 90)
-        overlay.center = self.view.center
-        overlay.backgroundColor = UIColor.black
-        overlay.alpha = 0.5
-        overlay.layer.cornerRadius = 10
-        overlay.clipsToBounds = true
-        // set loading indicator
-        loading.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        loading.activityIndicatorViewStyle =
-            UIActivityIndicatorViewStyle.white
-        loading.center = CGPoint(x: overlay.frame.size.width / 2,
-                                 y: overlay.frame.size.height / 2);
-        loading.hidesWhenStopped = true
+        let attrStr = try! NSAttributedString(
+            data: content.data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+            options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+            documentAttributes: nil)
         
-        overlay.addSubview(loading)
-        view.addSubview(overlay)
-        loading.startAnimating()
-        loadWeb()
-    }
-    // web load
-    func loadWeb() {
-        let range = webLink.range(of: "=")
-        let host = webLink.substring(to: (range?.lowerBound)!)
-        var data = webLink.substring(from: (range?.lowerBound)!)
-        data = data.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-        
-        let url = URL(string: host + data)
-        let request = URLRequest(url: url!)
-        webNews.loadRequest(request)
-    }
-    // web finish to load
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        loading.stopAnimating()
-        self.overlay.removeFromSuperview()
+        lbContent.frame = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.frame.size.width, height: view.frame.size.height)
+        lbContent.center = CGPoint(x: view.frame.size.width * 0.5, y: view.frame.size.height * 0.5)
+        lbContent.textColor = UIColor.black
+        lbContent.numberOfLines = 0
+        lbContent.lineBreakMode = .byTruncatingTail
+        lbContent.attributedText = attrStr
+        svContent.addSubview(lbContent)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func viewDidApear (_ animated: Bool) {
+        super.viewDidAppear(animated)
+        lbContent.frame = svContent.bounds
+        svContent.contentSize = lbContent.frame.size
     }
     
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        lbContent.contentScaleFactor = scale
+        lbContent.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.frame.size.width / scale, height: lbContent.frame.size.height)
+        lbContent.contentMode = .scaleAspectFit
+        svContent.contentSize = CGSize(width: lbContent.frame.size.width, height: (lbContent.frame.origin.y + lbContent.frame.size.height) * scale)
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return lbContent
+    }
     
     /*
      // MARK: - Navigation
