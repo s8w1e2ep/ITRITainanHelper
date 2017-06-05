@@ -9,14 +9,25 @@
 import UIKit
 
 class BathroomViewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var list = [String]()
+    var passarray = [String]()
+    var info = [String]()
+    var guideOverlay = UIView() // black frame
+    var isFirst = false
+    //var vc:String?
 
     @IBOutlet weak var mytable: UITableView!
-    var info = ["1樓東側廁所","1樓西側廁所","2樓東側廁所","2樓西側廁所","3樓東側廁所","3樓西側廁所","4樓東側廁所","4樓西側廁所","5樓東側廁所","5樓西側廁所","6樓東側廁所","6樓西側廁所","7樓東側廁所","7樓西側廁所","8樓東側廁所","8樓西側廁所","9樓東側廁所","9樓西側廁所","10樓東側廁所","10樓西側廁所","11樓東側廁所","11樓西側廁所","12樓東側廁所","12樓西側廁所","13樓廁所","14樓廁所","15樓廁所","16樓廁所"]
+    //var info = ["1樓東側廁所","1樓西側廁所","2樓東側廁所","2樓西側廁所","3樓東側廁所","3樓西側廁所","4樓東側廁所","4樓西側廁所","5樓東側廁所","5樓西側廁所","6樓東側廁所","6樓西側廁所","7樓東側廁所","7樓西側廁所","8樓東側廁所","8樓西側廁所","9樓東側廁所","9樓西側廁所","10樓東側廁所","10樓西側廁所","11樓東側廁所","11樓西側廁所","12樓東側廁所","12樓西側廁所","13樓廁所","14樓廁所","15樓廁所","16樓廁所"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        /*let defaults = UserDefaults.standard
+        let checkFirstLaunch = defaults.bool(forKey: "isAppFirstLaunch")
+        if (checkFirstLaunch == true) {
+            // is first launch
+            isFirst = true
+            setGuideLayout()
+        }*/
+
         /*mytable.register(
             UITableViewCell.self, forCellReuseIdentifier: "Cell")
  */
@@ -33,8 +44,7 @@ class BathroomViewViewController: UIViewController, UITableViewDelegate, UITable
         return 1
     }
     
-    
-    
+        
     // 必須實作的方法：每一組有幾個 cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return info.count

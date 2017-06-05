@@ -511,7 +511,7 @@
 				TargetAttributes = {
 					67117C3D1E7A50C500357D9F = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = P7Y2HNH4ZD;
+						DevelopmentTeam = 2HZL76C8HX;
 						ProvisioningStyle = Automatic;
 					};
 					67117C511E7A50C500357D9F = {
@@ -847,7 +847,8 @@
 			baseConfigurationReference = 770B123BA99BAFAF4E20AA21 /* Pods-ITRITainenHelper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = P7Y2HNH4ZD;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2HZL76C8HX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
@@ -859,8 +860,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = itri.jiang.ITRITainenHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = itri.uscc.ITRITainenHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = "armv7 arm64 armv7s x86_64";
 			};
@@ -871,7 +873,8 @@
 			baseConfigurationReference = F29D885B1DE2474646A5D98E /* Pods-ITRITainenHelper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = P7Y2HNH4ZD;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2HZL76C8HX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
@@ -883,8 +886,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = itri.jiang.ITRITainenHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = itri.uscc.ITRITainenHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				VALID_ARCHS = "armv7 arm64 armv7s x86_64";
 			};

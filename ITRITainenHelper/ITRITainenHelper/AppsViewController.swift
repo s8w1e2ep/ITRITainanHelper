@@ -14,17 +14,19 @@ class AppsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+        let dbHelper = DatabaseHelper.init()
+        let mobileappsArray = dbHelper.queryMobileAppTable()
+        for data in mobileappsArray {
+            let temp = data as! MobileApps
+            print("(mobileapp -> appId: ", temp.appId!, ", appName: ", temp.appName!, ", appIOSUrl: ", temp.appIOSUrl!, ", appImage: ", temp.appImage!, ", lastUpdateTime: ", temp.lastUpdateTime!, ")")
+        }
+        print("yuder")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        let dbHelper = DatabaseHelper.init()
-        let apps = dbHelper.queryMobileAppTable()
-        for app in apps {
-            print((app as! MobileApps).appId)
-        }
+        
     }
     
     @IBAction func backHomeAlone(_ sender: Any) {
