@@ -11,6 +11,7 @@ import UIKit
 class FacilityViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource{
 
     
+    
     @IBOutlet weak var collect1: UICollectionView!
     let fullScreenSize = UIScreen.main.bounds.size
     override func viewDidLoad() {
@@ -18,8 +19,7 @@ class FacilityViewController: UIViewController,UICollectionViewDelegate,UICollec
         // Do any additional setup after loading the view, typically from a nib.
         
     }
-    
-    
+        
     
     @IBAction func goBackMain(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)

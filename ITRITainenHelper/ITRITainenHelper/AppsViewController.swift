@@ -19,7 +19,7 @@ class AppsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // Do any additional setup after loading the view.
         let dbHelper = DatabaseHelper.init(name: "test_1.sqlite")
         self.apps = dbHelper.queryMobileAppTable()
-        for data in self.apps {
+        for _ in self.apps {
             count += 1
             
         }
@@ -28,11 +28,7 @@ class AppsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        let dbHelper = DatabaseHelper.init()
-        let apps = dbHelper.queryMobileAppTable()
-        for app in apps {
-            print((app as! MobileApps).appId)
-        }
+        
     }
     
     @IBAction func backHomeAlone(_ sender: Any) {

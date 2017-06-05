@@ -32,7 +32,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
             /* first launch layout */
             isFirst = true
             setGuideLayout()
-            defaults.set(true, forKey: "isMessageLaunchBefore")
+            //defaults.set(true, forKey: "isMessageLaunchBefore")
         }
     }
     

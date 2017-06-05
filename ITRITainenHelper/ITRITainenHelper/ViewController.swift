@@ -102,15 +102,17 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         let isAppLaunchBefore = defaults.bool(forKey: "isAppLaunchBefore")
         if isAppLaunchBefore {
             /* normal layout */
+
         } else {
             /* first launch layout */
             // TODO: - do something
-            
-            defaults.set(true, forKey: "isAppLaunchBefore")
+            layoutWelcomeLayoutOne()
+            //defaults.set(true, forKey: "isAppLaunchBefore")
+
         }
         
         /* get data from edm table and set swipe image */
-        self.edmArray = self.databaseHelper.queryEdmTable()
+        /*self.edmArray = self.databaseHelper.queryEdmTable()
         let edmImageArray = NSMutableArray()
         for edms in self.edmArray {
             let edmItem = edms as! Edm
@@ -121,7 +123,7 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
                     // if file does not exist, download file
                     DataSyncer.downloadFile("\(url)", destination: "\(url)")
                 } else {
-                    let image = UIImage(contentsOfFile: edmItem.edmImage!)
+                    let image = UIImage(contentsOfFile: edmItem.edmImage!)t
                     edmImageArray.add(image!)
                 }
             } catch _ {
@@ -132,7 +134,7 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         // set up image array & count, type cast
         self.logoImage = edmImageArray as! [UIImage]
         self.logoImageCount = self.logoImage.count
-        
+        */
         
         /////// TEST: - test function here
         //        let temp_array = databaseHelper.testQueryCategoryId(rank: Int64(DatabaseHelper.KEYWORD_ADMINISTRATIVE_CATEGORY_RANK))
@@ -216,19 +218,20 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
     //MARK: - layout instruction subviews
     func layoutWelcomeLayoutOne() {
         self.firstWelcomeView.frame = self.view.bounds
-        // alpha 0.5 black
-        self.firstWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        // alpha 0.9 black
+        self.firstWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
     
         // dialog
         let dialogView = UIImageView()
-        dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 3/5)
+        dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.5)
         dialogView.image = UIImage(named: "instruction_dialog.png")
-        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height / 4)
+        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height * 0.3)
         
         // dialog text
         let dialogText = UILabel()
-        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width/10), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
+        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width*0.05), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height*0.15), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
         dialogText.text = Constants.INSTRUCTION_WELCOME_1
+        dialogText.textAlignment = .center
         dialogText.lineBreakMode = .byWordWrapping
         dialogText.numberOfLines = 0
         
@@ -238,18 +241,19 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         
         // image
         let personImageView = UIImageView()
-        personImageView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
+        personImageView.frame = CGRect(x: self.view.bounds.origin.x + (self.view.bounds.size.width*0.05), y: self.view.bounds.origin.y + (self.view.bounds.size.height*0.55), width: self.view.bounds.size.width*0.35, height: self.view.bounds.size.height*0.3)
         personImageView.image = UIImage(named: "instructor.png")
         // button
         let nextButton = UIButton()
         nextButton.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/3, y: self.view.bounds.origin.y + (self.view.bounds.size.height*13/14), width: self.view.bounds.size.width/3, height: self.view.bounds.size.height/14)
+        nextButton.center = CGPoint(x: self.view.frame.size.width * 0.5, y: self.view.frame.size.height * 0.8)
         nextButton.setBackgroundImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
         nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
         nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
         // add button event
         nextButton.addTarget(self, action: #selector(instructionEventOne(sender:)), for: .touchUpInside)
         nextButton.setTitle("下一步", for: .normal)
-        
+        nextButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height * 0.9)
         // add all subview
         self.firstWelcomeView.addSubview(dialogView)
         self.firstWelcomeView.addSubview(personImageView)
@@ -265,18 +269,20 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
     
     func layoutWelcomeLayoutTwo() {
         self.secondWelcomeView.frame = self.view.bounds
-        self.secondWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        // alpha 0.9 black
+        self.secondWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
         
         // dialog
         let dialogView = UIImageView()
-        dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 3/5)
+        dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.5)
         dialogView.image = UIImage(named: "instruction_dialog1.png")
-        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height / 4)
-
+        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height * 0.3)
+        
         // dialog text
         let dialogText = UILabel()
-        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width/10), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
+        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width*0.05), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height*0.15), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
         dialogText.text = Constants.INSTRUCTION_WELCOME_2
+        dialogText.textAlignment = .center
         dialogText.lineBreakMode = .byWordWrapping
         dialogText.numberOfLines = 0
         
@@ -286,20 +292,20 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         
         // image
         let personImageView = UIImageView()
-        personImageView.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/2, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
+        personImageView.frame = CGRect(x: self.view.bounds.origin.x + (self.view.bounds.size.width*0.65), y: self.view.bounds.origin.y + (self.view.bounds.size.height*0.55), width: self.view.bounds.size.width*0.3, height: self.view.bounds.size.height*0.3)
         personImageView.image = UIImage(named: "instructor1.png")
-        
         // button
         let nextButton = UIButton()
         nextButton.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/3, y: self.view.bounds.origin.y + (self.view.bounds.size.height*13/14), width: self.view.bounds.size.width/3, height: self.view.bounds.size.height/14)
-        nextButton.setImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
-        // event
+        nextButton.center = CGPoint(x: self.view.frame.size.width * 0.5, y: self.view.frame.size.height * 0.8)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
+        // add button event
         nextButton.addTarget(self, action: #selector(instructionEventTwo(sender:)), for: .touchUpInside)
-        nextButton.setTitle("下一步", for: UIControlState.normal)
-        
-        // add subview
+        nextButton.setTitle("下一步", for: .normal)
+        nextButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height * 0.9)
+        // add all subview
         self.secondWelcomeView.addSubview(dialogView)
         self.secondWelcomeView.addSubview(personImageView)
         self.secondWelcomeView.addSubview(nextButton)
@@ -307,81 +313,102 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         self.secondWelcomeView.bringSubview(toFront: personImageView)
         self.secondWelcomeView.bringSubview(toFront: nextButton)
         
+        // add the welcome subview
         self.view.addSubview(self.secondWelcomeView)
+        self.view.bringSubview(toFront: self.secondWelcomeView)
     }
     
     func layoutWelcomeLayoutThird() {
         self.thirdWelcomeView.frame = self.view.bounds
-        self.thirdWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        // alpha 0.9 black
+        self.thirdWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
         
         // dialog
         let dialogView = UIImageView()
-        dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 3/5)
+        dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.5)
         dialogView.image = UIImage(named: "instruction_dialog2.png")
-        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height / 4)
-
+        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height * 0.3)
+        
         // dialog text
         let dialogText = UILabel()
-        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width/10), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
+        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width*0.05), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height*0.15), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
         dialogText.text = Constants.INSTRUCTION_WELCOME_3
-        dialogText.numberOfLines = 0
+        dialogText.textAlignment = .center
         dialogText.lineBreakMode = .byWordWrapping
+        dialogText.numberOfLines = 0
         
-        // add label to uiimageview
+        // add text label to imageview
         dialogView.addSubview(dialogText)
         dialogView.bringSubview(toFront: dialogText)
         
-        // image1
-        let leftImageView = UIImageView()
-        leftImageView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
-        leftImageView.image = UIImage(named: "instructor.png")
-        
-        // image2
+        // image
         let personImageView = UIImageView()
-        personImageView.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/2, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
-        personImageView.image = UIImage(named: "instructor1.png")
+        personImageView.frame = CGRect(x: self.view.bounds.origin.x + (self.view.bounds.size.width*0.05), y: self.view.bounds.origin.y + (self.view.bounds.size.height*0.55), width: self.view.bounds.size.width*0.35, height: self.view.bounds.size.height*0.3)
+        personImageView.image = UIImage(named: "instructor.png")
+
+        let personImageView1 = UIImageView()
+        personImageView1.frame = CGRect(x: self.view.bounds.origin.x + (self.view.bounds.size.width*0.65), y: self.view.bounds.origin.y + (self.view.bounds.size.height*0.55), width: self.view.bounds.size.width*0.3, height: self.view.bounds.size.height*0.3)
+        personImageView1.image = UIImage(named: "instructor1.png")
+        
         // button
         let nextButton = UIButton()
         nextButton.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/3, y: self.view.bounds.origin.y + (self.view.bounds.size.height*13/14), width: self.view.bounds.size.width/3, height: self.view.bounds.size.height/14)
-        nextButton.setImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
-        // event
+        nextButton.center = CGPoint(x: self.view.frame.size.width * 0.5, y: self.view.frame.size.height * 0.8)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
+        // add button event
         nextButton.addTarget(self, action: #selector(instructionEventThree(sender:)), for: .touchUpInside)
-        nextButton.setTitle("確認", for: UIControlState.normal)
+        nextButton.setTitle("確定", for: .normal)
+        nextButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height * 0.9)
+        // add all subview
         
         self.thirdWelcomeView.addSubview(dialogView)
-        self.thirdWelcomeView.addSubview(leftImageView)
         self.thirdWelcomeView.addSubview(personImageView)
+        self.thirdWelcomeView.addSubview(personImageView1)
         self.thirdWelcomeView.addSubview(nextButton)
+        
         self.thirdWelcomeView.bringSubview(toFront: dialogView)
-        self.thirdWelcomeView.bringSubview(toFront: leftImageView)
         self.thirdWelcomeView.bringSubview(toFront: personImageView)
+        self.thirdWelcomeView.bringSubview(toFront: personImageView1)
         self.thirdWelcomeView.bringSubview(toFront: nextButton)
         
+        // add the welcome subview
         self.view.addSubview(self.thirdWelcomeView)
-    }
+        self.view.bringSubview(toFront: self.thirdWelcomeView)    }
     
-    // 左右滑動以瀏覽內容？
+    // 左右滑動以瀏覽內容
     func layoutInstructionViews() {
         self.welcomeInstructinView.frame = self.view.bounds
-        self.welcomeInstructinView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.welcomeInstructinView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
         
         let fingerView = UIImageView()
         fingerView.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/4, y: self.view.bounds.origin.y + self.view.bounds.size.height/3, width: self.view.bounds.size.width/2, height: self.view.bounds.height/3)
-        fingerView.image = UIImage(named: "up_down_hand.png")
+        fingerView.image = UIImage(named: "left_right_hand.png")
+        // set label
+        let lbGuide: UILabel = UILabel()
+        lbGuide.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/3, y: self.view.bounds.origin.y + (self.view.bounds.size.height*13/14), width: self.view.bounds.size.width*0.5, height: self.view.bounds.size.height/14)
+        lbGuide.center = CGPoint(x: view.frame.size.width * 0.5, y: view.frame.size.height * 0.3)
+        lbGuide.text = Constants.INSTRUCTION_LEFT_RIGHT_CONTENT
+        lbGuide.textColor = UIColor.white
+        lbGuide.numberOfLines = 0
+        lbGuide.lineBreakMode = .byWordWrapping
+        lbGuide.font = UIFont.systemFont(ofSize: 18)
         // button
         let nextButton = UIButton()
         nextButton.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/3, y: self.view.bounds.origin.y + (self.view.bounds.size.height*13/14), width: self.view.bounds.size.width/3, height: self.view.bounds.size.height/14)
-        nextButton.setImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
+        
         // event
         nextButton.addTarget(self, action: #selector(instructionEventLast(sender:)), for: .touchUpInside)
         nextButton.setTitle("確定", for: UIControlState.normal)
-        
+        nextButton.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height * 0.9)
+        self.welcomeInstructinView.addSubview(lbGuide)
         self.welcomeInstructinView.addSubview(fingerView)
         self.welcomeInstructinView.addSubview(nextButton)
+        self.welcomeInstructinView.bringSubview(toFront: lbGuide)
         self.welcomeInstructinView.bringSubview(toFront: fingerView)
         self.welcomeInstructinView.bringSubview(toFront: nextButton)
         
@@ -1022,17 +1049,7 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
             // remove syncing view
             self.syncingView.removeFromSuperview()
             
-            // check instruction flag
-            // check app first launch
-            let defaults = UserDefaults.standard
-            let checkFirstLaunch = defaults.bool(forKey: "isAppFirstLaunch")
-            if (checkFirstLaunch != true) {
-                print("app already launched")
-            } else {
-                print("app first launch")
-                // first launch --> instruction layout
-//                layoutWelcomeLayoutOne()
-            }
+            
         } else if (status == SYNC_INTERNET_FAIL) {
             print("suncing, internet fail.")
             let actionSheetController: UIAlertController = UIAlertController(title: "警告", message: "網路連線錯誤！", preferredStyle: .alert)
