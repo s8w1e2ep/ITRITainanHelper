@@ -12,6 +12,7 @@ class FacilityViewController: UIViewController,UICollectionViewDelegate,UICollec
     
 
     
+    
     @IBOutlet weak var collect1: UICollectionView!
     let fullScreenSize = UIScreen.main.bounds.size
     
@@ -30,8 +31,7 @@ class FacilityViewController: UIViewController,UICollectionViewDelegate,UICollec
             setGuideLayout()
         }*/
     }
-    
-    
+        
     
     @IBAction func goBackMain(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)

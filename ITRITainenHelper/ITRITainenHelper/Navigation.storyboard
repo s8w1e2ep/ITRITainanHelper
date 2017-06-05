@@ -12,7 +12,7 @@
         <!--Navigation View Controller-->
         <scene sceneID="Jal-4y-Yk7">
             <objects>
-                <viewController id="XaW-wy-aUJ" customClass="NavigationViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="navigationVC" id="XaW-wy-aUJ" customClass="NavigationViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aTb-VC-D2W"/>
                         <viewControllerLayoutGuide type="bottom" id="Ull-jX-qBl"/>
@@ -82,7 +82,7 @@
         <!--Navigation Detail Table View Controller-->
         <scene sceneID="WBj-ne-AtO">
             <objects>
-                <tableViewController id="gd8-Gz-RcA" customClass="NavigationDetailTableViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="dashboardDetailVC" id="gd8-Gz-RcA" customClass="NavigationDetailTableViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="Sxd-y6-esb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -106,6 +106,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cdA-Cj-Xbp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="885.60000000000002" y="160.56971514242881"/>
+        </scene>
+        <!--Navigation Map View Controller-->
+        <scene sceneID="Dkk-xE-Ysk">
+            <objects>
+                <viewController storyboardIdentifier="navigationMapVC" id="cRS-f0-4hj" customClass="NavigationMapViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ipc-NO-4Pn"/>
+                        <viewControllerLayoutGuide type="bottom" id="b1D-uQ-haA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AZs-oC-g3q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DlQ-oO-uWc" customClass="UINavigationMap">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="navigationMapMap" destination="DlQ-oO-uWc" id="uhH-aG-out"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LEX-3w-TB0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1701.5999999999999" y="160.56971514242881"/>
         </scene>
     </scenes>
 </document>

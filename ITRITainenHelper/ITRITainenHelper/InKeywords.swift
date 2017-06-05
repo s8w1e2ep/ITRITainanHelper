@@ -10,7 +10,7 @@ import Foundation
 
 
 class InKeywords {
-    var id: String!
+    var stringId: String!
     var keywordId: String!
     var lastUpdateTime: Int64!
     
@@ -18,8 +18,8 @@ class InKeywords {
         
     }
     
-    init(id: String, keywordId: String, lastUpdateTime: Int64) {
-        self.id = id
+    init(stringId: String, keywordId: String, lastUpdateTime: Int64) {
+        self.stringId = stringId
         self.keywordId = keywordId
         self.lastUpdateTime = lastUpdateTime
     }
