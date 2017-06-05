@@ -155,10 +155,10 @@
             </objects>
             <point key="canvasLocation" x="405.60000000000002" y="59.820089955022496"/>
         </scene>
-        <!--Main Page View Controller-->
+        <!--Edm Detail View Controller-->
         <scene sceneID="wpk-zB-xgh">
             <objects>
-                <viewController storyboardIdentifier="pageVC" id="Xko-y9-BVP" customClass="MainPageViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="edmViewController" id="Xko-y9-BVP" customClass="EdmDetailViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T1h-0z-yoA"/>
                         <viewControllerLayoutGuide type="bottom" id="CwZ-20-bKv"/>
@@ -173,7 +173,7 @@
                                     <navigationItem title="台南市洽公小幫手" id="vDx-IO-fRz">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="HJf-km-xVN">
                                             <connections>
-                                                <action selector="returnHome:" destination="Xko-y9-BVP" id="5EM-zp-rb6"/>
+                                                <action selector="goBackAction:" destination="Xko-y9-BVP" id="hPF-f2-VZ4"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -198,6 +198,7 @@
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="edmDetailWebView" destination="svE-cL-6q8" id="u2D-mu-aLE"/>
                         <outlet property="pageWebView" destination="svE-cL-6q8" id="dLt-mo-iIb"/>
                         <outlet property="returnButtonAction" destination="HJf-km-xVN" id="1W7-9C-Zyb"/>
                     </connections>

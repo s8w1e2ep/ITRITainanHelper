@@ -15,6 +15,7 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
     var navigationDataArray = NSMutableArray()
     var databaseHelper = DatabaseHelper.init()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.navigationDataArray.add("yes")
@@ -22,6 +23,10 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         // load data(only at init)
         self.databaseHelper = DatabaseHelper.init()
+        // get all data
+        self.navigationDataArray = self.databaseHelper.getAdministrativeCategories()
+        self.navigationTableView.delegate = self
+        self.navigationTableView.dataSource = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,13 +36,16 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBAction func goBackMain(_ sender: Any) {
         // should go back to main storyboard
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateInitialViewController()!
-        self.present(controller, animated: true, completion: nil)
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let controller = storyboard.instantiateInitialViewController()!
+//        self.present(controller, animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let categoryItem = self.navigationDataArray.object(at: indexPath.row) as! AdministrativeUnitCategory
+        tableCell.textLabel?.text = categoryItem.name
         return tableCell
     }
     
@@ -64,6 +72,11 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
 //            let detailVC = segue.destination
 //            
 //        }
+        let destinationViewController = segue.destination as! NavigationDetailTableViewController
+        let indexPath = self.navigationTableView.indexPathForSelectedRow
+        let selectedRow = indexPath?.row
+        let category = self.navigationDataArray.object(at: selectedRow!) as! AdministrativeUnitCategory
+        destinationViewController.categoryId = category.categoryId!
     }
     
 

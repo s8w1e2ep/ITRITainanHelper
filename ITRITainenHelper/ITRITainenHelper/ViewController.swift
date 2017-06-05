@@ -14,7 +14,7 @@ import AVKit
 import AVFoundation
 
 
-class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
+class ViewController: UIViewController, DataSyncerListener, NavigationMapListener, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchButton: UIButton!
@@ -56,6 +56,8 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
     var secondWelcomeView = UIView()
     var thirdWelcomeView = UIView()
     var welcomeInstructinView = UIView()
+    var edmArray = NSMutableArray()
+    var selectedEdm = Edm()
     
 
     //MARK: - basic functions
@@ -67,30 +69,76 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         self.databaseHelper = DatabaseHelper.init(name: "test_1.sqlite")
         self.databaseHelper.createDB()
         
-        self.syncingView.frame = self.view.bounds
-        
-        // AVPlayer set up
-        let playerItem = AVPlayerItem(url: self.playerUrl)
-        self.player = AVPlayer(playerItem: playerItem)
-        self.playerLayer = AVPlayerLayer(player: self.player)
-        self.playerLayer.frame = self.view.bounds
-        
         // SQLITE: - download pictures and data
         syncAllTables()
         
         /* syncing always goes first */
-        // add
+        // add syncing comparison
+        /*
         if self.isSyncComplete == false {
-            let downloadingLabel = UILabel(frame: CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/5, y: self.view.bounds.origin.y + self.view.bounds.size.height * 13/14, width: self.view.bounds.size.width * 3/5, height: self.view.bounds.size.height/14))
+            self.syncingView.frame = self.view.bounds
+            self.syncingView.backgroundColor = UIColor.black
+            
+            // AVPlayer set up
+            let playerItem = AVPlayerItem(url: self.playerUrl)
+            self.player = AVPlayer(playerItem: playerItem)
+            self.playerLayer = AVPlayerLayer(player: self.player)
+            self.playerLayer.frame = self.view.bounds
+            
+            let downloadingLabel = UILabel(frame: CGRect(x: self.syncingView.bounds.origin.x + self.syncingView.bounds.size.width/5, y: self.syncingView.bounds.origin.y + self.syncingView.bounds.size.height * 13/14, width: self.syncingView.bounds.size.width * 3/5, height: self.syncingView.bounds.size.height/14))
             downloadingLabel.text = Constants.DATA_STATUS_SYNC
             downloadingLabel.backgroundColor = UIColor.clear
-            downloadingLabel.textColor = UIColor.black
+            downloadingLabel.textColor = UIColor.white
             self.syncingView.layer.addSublayer(self.playerLayer)
             self.syncingView.addSubview(downloadingLabel)
+            self.view.addSubview(self.syncingView)
             // 開始播放
             self.player.play()
         }
+        */
         
+        //main layout
+        let defaults = UserDefaults.standard
+        let isAppLaunchBefore = defaults.bool(forKey: "isAppLaunchBefore")
+        if isAppLaunchBefore {
+            /* normal layout */
+        } else {
+            /* first launch layout */
+            // TODO: - do something
+            
+            defaults.set(true, forKey: "isAppLaunchBefore")
+        }
+        
+        /* get data from edm table and set swipe image */
+        self.edmArray = self.databaseHelper.queryEdmTable()
+        let edmImageArray = NSMutableArray()
+        for edms in self.edmArray {
+            let edmItem = edms as! Edm
+            print(edmItem)
+            let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(edmItem.edmImage!)
+            do {
+                if try !url.checkResourceIsReachable() {
+                    // if file does not exist, download file
+                    DataSyncer.downloadFile("\(url)", destination: "\(url)")
+                } else {
+                    let image = UIImage(contentsOfFile: edmItem.edmImage!)
+                    edmImageArray.add(image!)
+                }
+            } catch _ {
+                print("cannot find file: \(url)")
+            }
+        }
+        
+        // set up image array & count, type cast
+        self.logoImage = edmImageArray as! [UIImage]
+        self.logoImageCount = self.logoImage.count
+        
+        
+        /////// TEST: - test function here
+        //        let temp_array = databaseHelper.testQueryCategoryId(rank: Int64(DatabaseHelper.KEYWORD_ADMINISTRATIVE_CATEGORY_RANK))
+        //        let aray = databaseHelper.queryAdministrativeUnitByCategoryId(categoryId: "adminUnitCate_570b6ff3994e52_62953457")
+        //        print("query unit category with rank: \(temp_array)")
+        //        print("query unit by category id: \(aray)")
         
         self.navigationBar = UINavigationBar.appearance()
         self.navigationItem.hidesBackButton = false
@@ -102,33 +150,22 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         self.leftActivityButton.setImage(UIImage.init(named: "index_left.png"), for: UIControlState.normal)
         
         // initialize iamge view
-        self.activityImageView = UIImageView.init(frame: self.activityView.bounds)
+//        self.activityImageView = UIImageView.init(frame: self.activityView.bounds)
         
         // TODO: - navigation bar/item layout is not good, needed to be fixed
         // put image to title bar
-        print(self.myNavigationItem.title!)
-        self.myNavigationItem.titleView = UIView.init(frame: CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.height/12.5))
-        let logo = UIImage.init(named: "index_logo1.png")
-        let logoImageView = UIImageView.init(frame: CGRect(x: self.navigationItem.titleView!.bounds.origin.x, y: self.navigationItem.titleView!.bounds.origin.y, width: self.navigationItem.titleView!.bounds.size.width * 1/5, height: self.navigationItem.titleView!.bounds.size.height))
-        let logoLabel = UILabel.init(frame: CGRect(x: self.navigationItem.titleView!.bounds.origin.x + self.navigationItem.titleView!.bounds.width/5, y: self.navigationItem.titleView!.bounds.origin.y, width: self.navigationItem.titleView!.bounds.size.width * 4/5, height: self.navigationItem.titleView!.bounds.size.height))
-        logoImageView.image = logo
-        logoLabel.text = Constants.MAIN_BAR_TITLE
-        self.myNavigationItem.titleView!.addSubview(logoImageView)
-        self.myNavigationItem.titleView!.addSubview(logoLabel)
-        self.myNavigationItem.titleView!.bringSubview(toFront: logoImageView)
-        self.myNavigationItem.titleView!.bringSubview(toFront: logoLabel)
-        self.myNavigationItem.titleView!.backgroundColor = UIColor.init(red: 60, green: 176, blue: 157, alpha: 1)
-        // self-created database
-        // insertData()
-        
-        // try to read from tainan3
-//        readDataFromTainanSQLite()
-        
-        // database initialization
-        self.databaseHelper = DatabaseHelper.init(name: "new_db.sqlite")
-        self.databaseHelper.createDB()
-        // SQLITE: - download pictures and data
-        syncAllTables()
+//        print(self.myNavigationItem.title!)
+//        self.myNavigationItem.titleView = UIView.init(frame: CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.height/12.5))
+//        let logo = UIImage.init(named: "index_logo1.png")
+//        let logoImageView = UIImageView.init(frame: CGRect(x: self.navigationItem.titleView!.bounds.origin.x, y: self.navigationItem.titleView!.bounds.origin.y, width: self.navigationItem.titleView!.bounds.size.width * 1/5, height: self.navigationItem.titleView!.bounds.size.height))
+//        let logoLabel = UILabel.init(frame: CGRect(x: self.navigationItem.titleView!.bounds.origin.x + self.navigationItem.titleView!.bounds.width/5, y: self.navigationItem.titleView!.bounds.origin.y, width: self.navigationItem.titleView!.bounds.size.width * 4/5, height: self.navigationItem.titleView!.bounds.size.height))
+//        logoImageView.image = logo
+//        logoLabel.text = Constants.MAIN_BAR_TITLE
+//        self.myNavigationItem.titleView!.addSubview(logoImageView)
+//        self.myNavigationItem.titleView!.addSubview(logoLabel)
+//        self.myNavigationItem.titleView!.bringSubview(toFront: logoImageView)
+//        self.myNavigationItem.titleView!.bringSubview(toFront: logoLabel)
+//        self.myNavigationItem.titleView!.backgroundColor = UIColor.init(red: 60, green: 176, blue: 157, alpha: 1)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -180,16 +217,25 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
     func layoutWelcomeLayoutOne() {
         self.firstWelcomeView.frame = self.view.bounds
         // alpha 0.5 black
-        self.firstWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.firstWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     
         // dialog
         let dialogView = UIImageView()
         dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 3/5)
         dialogView.image = UIImage(named: "instruction_dialog.png")
+        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height / 4)
+        
         // dialog text
         let dialogText = UILabel()
-        dialogText.frame = CGRect(x: dialogView.frame.origin.x + (dialogView.bounds.size.width/10), y: dialogView.frame.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
+        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width/10), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
         dialogText.text = Constants.INSTRUCTION_WELCOME_1
+        dialogText.lineBreakMode = .byWordWrapping
+        dialogText.numberOfLines = 0
+        
+        // add text label to imageview
+        dialogView.addSubview(dialogText)
+        dialogView.bringSubview(toFront: dialogText)
+        
         // image
         let personImageView = UIImageView()
         personImageView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
@@ -197,39 +243,52 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         // button
         let nextButton = UIButton()
         nextButton.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/3, y: self.view.bounds.origin.y + (self.view.bounds.size.height*13/14), width: self.view.bounds.size.width/3, height: self.view.bounds.size.height/14)
-        nextButton.setImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
-        nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button.png"), for: UIControlState.normal)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.selected)
+        nextButton.setBackgroundImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
         // add button event
         nextButton.addTarget(self, action: #selector(instructionEventOne(sender:)), for: .touchUpInside)
-        nextButton.titleLabel?.text = "下一步"
+        nextButton.setTitle("下一步", for: .normal)
         
         // add all subview
         self.firstWelcomeView.addSubview(dialogView)
-        self.firstWelcomeView.addSubview(dialogText)
         self.firstWelcomeView.addSubview(personImageView)
         self.firstWelcomeView.addSubview(nextButton)
+        self.firstWelcomeView.bringSubview(toFront: dialogView)
+        self.firstWelcomeView.bringSubview(toFront: personImageView)
+        self.firstWelcomeView.bringSubview(toFront: nextButton)
         
         // add the welcome subview
         self.view.addSubview(self.firstWelcomeView)
+        self.view.bringSubview(toFront: self.firstWelcomeView)
     }
     
     func layoutWelcomeLayoutTwo() {
         self.secondWelcomeView.frame = self.view.bounds
-        self.secondWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.secondWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         
         // dialog
         let dialogView = UIImageView()
         dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 3/5)
         dialogView.image = UIImage(named: "instruction_dialog1.png")
+        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height / 4)
+
         // dialog text
         let dialogText = UILabel()
-        dialogText.frame = CGRect(x: dialogView.frame.origin.x + (dialogView.bounds.size.width/10), y: dialogView.frame.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
+        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width/10), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
         dialogText.text = Constants.INSTRUCTION_WELCOME_2
+        dialogText.lineBreakMode = .byWordWrapping
+        dialogText.numberOfLines = 0
+        
+        // add text label to imageview
+        dialogView.addSubview(dialogText)
+        dialogView.bringSubview(toFront: dialogText)
+        
         // image
         let personImageView = UIImageView()
         personImageView.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/2, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
         personImageView.image = UIImage(named: "instructor1.png")
+        
         // button
         let nextButton = UIButton()
         nextButton.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/3, y: self.view.bounds.origin.y + (self.view.bounds.size.height*13/14), width: self.view.bounds.size.width/3, height: self.view.bounds.size.height/14)
@@ -238,33 +297,45 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
         // event
         nextButton.addTarget(self, action: #selector(instructionEventTwo(sender:)), for: .touchUpInside)
-        nextButton.titleLabel?.text = "下一步"
+        nextButton.setTitle("下一步", for: UIControlState.normal)
         
         // add subview
         self.secondWelcomeView.addSubview(dialogView)
-        self.secondWelcomeView.addSubview(dialogText)
         self.secondWelcomeView.addSubview(personImageView)
         self.secondWelcomeView.addSubview(nextButton)
+        self.secondWelcomeView.bringSubview(toFront: dialogView)
+        self.secondWelcomeView.bringSubview(toFront: personImageView)
+        self.secondWelcomeView.bringSubview(toFront: nextButton)
         
         self.view.addSubview(self.secondWelcomeView)
     }
     
     func layoutWelcomeLayoutThird() {
         self.thirdWelcomeView.frame = self.view.bounds
-        self.thirdWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.thirdWelcomeView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         
         // dialog
         let dialogView = UIImageView()
         dialogView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 3/5)
         dialogView.image = UIImage(named: "instruction_dialog2.png")
+        dialogView.center = CGPoint(x: self.view.bounds.size.width / 2, y: view.frame.size.height / 4)
+
         // dialog text
         let dialogText = UILabel()
-        dialogText.frame = CGRect(x: dialogView.frame.origin.x + (dialogView.bounds.size.width/10), y: dialogView.frame.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
+        dialogText.frame = CGRect(x: dialogView.bounds.origin.x + (dialogView.bounds.size.width/10), y: dialogView.bounds.origin.y + (dialogView.bounds.size.height/4), width: dialogView.bounds.size.width * 9/10, height: dialogView.bounds.size.height/2)
         dialogText.text = Constants.INSTRUCTION_WELCOME_3
+        dialogText.numberOfLines = 0
+        dialogText.lineBreakMode = .byWordWrapping
+        
+        // add label to uiimageview
+        dialogView.addSubview(dialogText)
+        dialogView.bringSubview(toFront: dialogText)
+        
         // image1
         let leftImageView = UIImageView()
         leftImageView.frame = CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
         leftImageView.image = UIImage(named: "instructor.png")
+        
         // image2
         let personImageView = UIImageView()
         personImageView.frame = CGRect(x: self.view.bounds.origin.x + self.view.bounds.size.width/2, y: self.view.bounds.origin.y + (self.view.bounds.size.height*2/3), width: self.view.bounds.size.width/2, height: self.view.bounds.size.height/3)
@@ -277,13 +348,16 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
         // event
         nextButton.addTarget(self, action: #selector(instructionEventThree(sender:)), for: .touchUpInside)
-        nextButton.titleLabel?.text = "確認"
+        nextButton.setTitle("確認", for: UIControlState.normal)
         
         self.thirdWelcomeView.addSubview(dialogView)
-        self.thirdWelcomeView.addSubview(dialogText)
         self.thirdWelcomeView.addSubview(leftImageView)
         self.thirdWelcomeView.addSubview(personImageView)
         self.thirdWelcomeView.addSubview(nextButton)
+        self.thirdWelcomeView.bringSubview(toFront: dialogView)
+        self.thirdWelcomeView.bringSubview(toFront: leftImageView)
+        self.thirdWelcomeView.bringSubview(toFront: personImageView)
+        self.thirdWelcomeView.bringSubview(toFront: nextButton)
         
         self.view.addSubview(self.thirdWelcomeView)
     }
@@ -304,7 +378,15 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         nextButton.setImage(UIImage(named: "instruction_button_pressed.png"), for: UIControlState.highlighted)
         // event
         nextButton.addTarget(self, action: #selector(instructionEventLast(sender:)), for: .touchUpInside)
-        nextButton.titleLabel?.text = "確定"
+        nextButton.setTitle("確定", for: UIControlState.normal)
+        
+        self.welcomeInstructinView.addSubview(fingerView)
+        self.welcomeInstructinView.addSubview(nextButton)
+        self.welcomeInstructinView.bringSubview(toFront: fingerView)
+        self.welcomeInstructinView.bringSubview(toFront: nextButton)
+        
+        self.view.addSubview(welcomeInstructinView)
+        self.view.bringSubview(toFront: welcomeInstructinView)
     }
     
     // instruction button events
@@ -342,9 +424,11 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
             if (self.logoImageCount < 0) {
                 print("count: \(self.logoImageCount)")
                 self.logoImageCount = 0
+                self.selectedEdm = self.edmArray.object(at: 0) as! Edm
             } else {
                 // assign image to imageView
                 UIView.transition(with: self.activityView, duration: 1, options: .transitionFlipFromRight, animations: { self.activityImageView.image = self.logoImage[self.logoImageCount] }, completion: nil)
+                self.selectedEdm = self.edmArray.object(at: self.logoImageCount) as! Edm
             }
         } else if (sender.direction == .right) {
             // swipe right
@@ -353,9 +437,11 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
             if (self.logoImageCount > self.maxImageCount - 1) {
                 print("count: \(self.logoImageCount)")
                 self.logoImageCount = self.maxImageCount - 1
+                self.selectedEdm = self.edmArray.object(at: self.logoImageCount) as! Edm
             } else {
                 // assign image to imageView
                 UIView.transition(with: self.activityView, duration: 1, options: .transitionFlipFromLeft, animations: { self.activityImageView.image = self.logoImage[self.logoImageCount] }, completion: nil)
+                self.selectedEdm = self.edmArray.object(at: self.logoImageCount) as! Edm
             }
         }
     }
@@ -366,19 +452,26 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
     func handlePageTap(sender: UITapGestureRecognizer) {
         // open view controller and push into view stack
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "pageVC") as! MainPageViewController
+        let controller = storyboard.instantiateViewController(withIdentifier: "edmViewController") as! EdmDetailViewController
+        // current corresponding url
+        controller.edmURL = self.selectedEdm.edmURL!
         self.present(controller, animated: true, completion: nil)
     }
     
+    /* activity switch & handleswipes --> update selected edm */
     // switch to previous imageview
     func leftActivitySwitch() {
         self.logoImageCount -= 1
         if (self.logoImageCount < 0) {
             print("count: \(self.logoImageCount)")
             self.logoImageCount = 0
+            // update selected edm
+            self.selectedEdm = self.edmArray.object(at: 0) as! Edm
         } else {
             // assign image to imageView
             UIView.transition(with: self.activityView, duration: 1, options: .transitionFlipFromRight, animations: { self.activityImageView.image = self.logoImage[self.logoImageCount] }, completion: nil)
+            // update selected edm
+            self.selectedEdm = self.edmArray.object(at: self.logoImageCount) as! Edm
         }
     }
     
@@ -388,9 +481,13 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         if (self.logoImageCount > self.maxImageCount - 1) {
             print("count: \(self.logoImageCount)")
             self.logoImageCount = self.maxImageCount - 1
+            // update selected edm
+            self.selectedEdm = self.edmArray.object(at: self.logoImageCount) as! Edm
         } else {
             // assign image to imageView
             UIView.transition(with: self.activityView, duration: 1, options: .transitionFlipFromLeft, animations: { self.activityImageView.image = self.logoImage[self.logoImageCount] }, completion: nil)
+            // update selected edm
+            self.selectedEdm = self.edmArray.object(at: self.logoImageCount) as! Edm
         }
     }
     
@@ -774,7 +871,7 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
             }
             
             for keys in try db.prepare(inKeyTable) {
-                let temp = InKeywords(id: String(keys[DBColExpressions.stringId]), keywordId: keys[DBColExpressions.keywordId], lastUpdateTime: keys[DBColExpressions.wrongLastUpdateTime])
+                let temp = InKeywords(stringId: String(keys[DBColExpressions.stringId]), keywordId: keys[DBColExpressions.keywordId], lastUpdateTime: keys[DBColExpressions.wrongLastUpdateTime])
                 inKeys.add(temp)
             }
             
@@ -829,7 +926,7 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         
         for data in inKeys {
             let temp = data as! InKeywords
-            print("(", temp.id!, ", ", temp.keywordId!, ", ", temp.lastUpdateTime!, ")")
+            print("(", temp.stringId!, ", ", temp.keywordId!, ", ", temp.lastUpdateTime!, ")")
         }
         
         for data in instructs {
@@ -924,6 +1021,7 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
             print("done syncing.")
             // remove syncing view
             self.syncingView.removeFromSuperview()
+            
             // check instruction flag
             // check app first launch
             let defaults = UserDefaults.standard
@@ -933,7 +1031,7 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
             } else {
                 print("app first launch")
                 // first launch --> instruction layout
-                layoutWelcomeLayoutOne()
+//                layoutWelcomeLayoutOne()
             }
         } else if (status == SYNC_INTERNET_FAIL) {
             print("suncing, internet fail.")
@@ -980,7 +1078,7 @@ class ViewController: UIViewController, DataSyncerListener, UISearchBarDelegate,
         
         for data in inKeywordArray {
             let temp = data as! InKeywords
-            print("(inKeyword -> id: ", temp.id!, ", keywordId: ", temp.keywordId!, ", lastUpdateTime: ", temp.lastUpdateTime!, ")")
+            print("(inKeyword -> id: ", temp.stringId!, ", keywordId: ", temp.keywordId!, ", lastUpdateTime: ", temp.lastUpdateTime!, ")")
         }
         
         for data in keywordArray {

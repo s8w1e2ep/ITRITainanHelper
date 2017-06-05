@@ -22,14 +22,17 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //message layout
         let defaults = UserDefaults.standard
-        let checkFirstLaunch = defaults.bool(forKey: "isAppFirstLaunch")
-        if (checkFirstLaunch == true) {
-            // is first launch
+        let isMessageLaunchBefore = defaults.bool(forKey: "isMessageLaunchBefore")
+        if isMessageLaunchBefore {
+            /* normal layout */
+            setGeneralLayout()
+        } else {
+            /* first launch layout */
             isFirst = true
             setGuideLayout()
-        } else {
-            setGeneralLayout()
+            defaults.set(true, forKey: "isMessageLaunchBefore")
         }
     }
     

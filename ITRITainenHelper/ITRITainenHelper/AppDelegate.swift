@@ -23,15 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // UINavigationBar.appearance().backgroundColor = UIColor(patternImage: navigationImage)
         
-        // check app first launch
-        let defaults = UserDefaults.standard
-        if defaults.string(forKey: "isAppFirstLaunch") != nil {
-            print("app launched once")
-        } else {
-            defaults.set(true, forKey: "isAppFirstLaunch")
-            print("app launched for first time")
-        }
-        
         return true
     }
 
@@ -55,11 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        let defaults = UserDefaults.standard
-        if defaults.bool(forKey: "isAppFirstLaunch") == true {
-            // print("app launched once")
-            defaults.set(false, forKey: "isAppFirstLaunch")
-        }
     }
 
 

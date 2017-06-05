@@ -31,4 +31,14 @@ class AdministrativeUnitCategory {
         self.keyword = keyword
     }
     
+    init(categoryId: String, name: String, description: String, iconName: String, createTime: Int64, lastUpdateTime: Int64) {
+        self.categoryId = categoryId
+        self.name = name
+        self.description = description
+        self.iconName = iconName
+        self.createTime = createTime
+        self.lastUpdateTime = lastUpdateTime
+        self.keyword = ""
+    }
+    
 }
