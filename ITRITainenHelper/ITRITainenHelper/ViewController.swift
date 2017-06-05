@@ -87,19 +87,19 @@ class ViewController: UIViewController, DataSyncerListener,  UISearchBarDelegate
         self.myNavigationItem.titleView!.bringSubview(toFront: logoLabel)
         self.myNavigationItem.titleView!.backgroundColor = UIColor.init(red: 60, green: 176, blue: 157, alpha: 1)
         
-<<<<<<< HEAD
+// <<<<<<< HEAD
         // self-created database
         // insertData()
         
         // try to read from tainan3
 //        readDataFromTainanSQLite()
         
-        /*
+        
         self.databaseHelper = DatabaseHelper.init()
-=======
+// =======
         // database initialization
         self.databaseHelper = DatabaseHelper.init(name: "new_db.sqlite")
->>>>>>> efdf24cfc7af48095ed775ad185c109fbee874d0
+// >>>>>>> efdf24cfc7af48095ed775ad185c109fbee874d0
         self.databaseHelper.createDB()
         
         // SQLITE: - download pictures and data
@@ -700,11 +700,11 @@ class ViewController: UIViewController, DataSyncerListener,  UISearchBarDelegate
         
         for data in mobiles {
             let temp = data as! MobileApps
-<<<<<<< HEAD
-            print("(", temp.appId, ", ", temp.appName!, ", ", temp.appURL!, ", ", temp.appImage!, ", ", temp.lastUpdateTime, ")")
-=======
+//<<<<<<< HEAD
+            //print("(", temp.appId, ", ", temp.appName!, ", ", temp.appURL!, ", ", temp.appImage!, ", ", temp.lastUpdateTime, ")")
+//=======
             print("(", temp.appId!, ", ", temp.appName!, ", ", temp.appIOSUrl!, ", ", temp.appImage!, ", ", temp.lastUpdateTime!, ")")
->>>>>>> efdf24cfc7af48095ed775ad185c109fbee874d0
+//>>>>>>> efdf24cfc7af48095ed775ad185c109fbee874d0
         }
     }
     

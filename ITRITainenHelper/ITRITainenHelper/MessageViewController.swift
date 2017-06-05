@@ -23,13 +23,14 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         
         let defaults = UserDefaults.standard
-        let checkFirstLaunch = defaults.bool(forKey: "isAppFirstLaunch")
-        if (checkFirstLaunch == true) {
+        let isMessageLaunchBefore = defaults.bool(forKey: "isMessageLaunchBefore")
+        if (isMessageLaunchBefore) {
+            setGeneralLayout()
+        } else {
             // is first launch
             isFirst = true
             setGuideLayout()
-        } else {
-            setGeneralLayout()
+            defaults.set(true, forKey: "isMessageLaunchBefore")
         }
     }
     
@@ -111,7 +112,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
                     // Perform updates in the main thread when finished
                     let list = result.rssFeed?.items!
                     for item in list! {
-                        self.items.append(RSSFormat(title: item.title, pubDate: item.pubDate, link: item.link))
+                        self.items.append(RSSFormat(title: item.title, pubDate: item.pubDate, link: item.link, description: item.description))
                     }
                     
                     self.tvNews.reloadData()
@@ -143,7 +144,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
     // custom click event of tableview
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "NewsDetailViewController") as! NewsDetailViewController
-        vc.webLink = items[indexPath.row].link
+        vc.content = items[indexPath.row].description
         show(vc, sender: self)
     }
     
