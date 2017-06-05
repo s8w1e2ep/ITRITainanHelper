@@ -1,57 +1,40 @@
 //
-//  NavigationDetailTableViewController.swift
+//  NavigationDetailViewController.swift
 //  ITRITainenHelper
 //
-//  Created by Oslo on 4/20/17.
+//  Created by Oslo on 6/5/17.
 //  Copyright © 2017 uscc. All rights reserved.
 //
 
 import UIKit
 
-class NavigationDetailTableViewController: UITableViewController {
+class NavigationDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    // every cell: 左邊 imageView, 中間上面: 局處名稱, 中間下面(小字): 電話號碼, 右邊上面: 位置 按鈕, 右邊下面: 導航 按鈕
+    @IBOutlet weak var detailTableView: UITableView!
     var categoryId = String()
     var databaseHelper = DatabaseHelper.init(name: "test_1.sqlite")
     var dataArray = NSMutableArray()
     var selectedRow = 0
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
-        // use categoryId to query data and display
-        self.dataArray = self.databaseHelper.queryAdministrativeUnitByCategoryId(categoryId: self.categoryId) 
-        self.tableView.reloadData()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        // Do any additional setup after loading the view.
+        self.dataArray = self.databaseHelper.queryAdministrativeUnitByCategoryId(categoryId: self.categoryId)
+        self.detailTableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dataArray.count
-    }
-
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Configure the cell...
+    @IBAction func goBackAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         let currentItem = self.dataArray.object(at: indexPath.row) as! AdministrativeUnit
         // leftmost image
@@ -64,7 +47,7 @@ class NavigationDetailTableViewController: UITableViewController {
         leftImage.frame = CGRect(x: cell.contentView.bounds.origin.x, y: cell.contentView.bounds.origin.y, width: cell.contentView.bounds.size.width/4, height: cell.contentView.bounds.size.height)
         cell.contentView.addSubview(leftImage)
         
-        // title 
+        // title
         let title = UILabel(frame: CGRect(x: cell.contentView.bounds.origin.x + cell.contentView.bounds.size.width/4, y: cell.contentView.bounds.origin.y, width: cell.contentView.bounds.size.width/2, height: cell.contentView.bounds.size.height * 3/5))
         title.text = currentItem.name
         title.font = UIFont.boldSystemFont(ofSize: 14)
@@ -99,10 +82,10 @@ class NavigationDetailTableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // update counter
-        self.selectedRow = indexPath.row
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.dataArray.count
     }
+    
     
     func goLocation(sender: UIButton) {
         let storyboard = UIStoryboard(name: "Navigation", bundle: nil)
@@ -122,27 +105,11 @@ class NavigationDetailTableViewController: UITableViewController {
         print("go navigation")
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedRow = indexPath.row
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
+    
+    
     /*
     // MARK: - Navigation
 

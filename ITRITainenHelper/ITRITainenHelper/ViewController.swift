@@ -800,6 +800,7 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
     
     func checkDataBase() {
 //        let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("tainan3.sqlite")
+        Utilities.getDocumentPath()
         let url = Bundle.main.url(forResource: "tainan3", withExtension: "sqlite")!
         // Load the existing database
         if !FileManager.default.fileExists(atPath: url.path) {

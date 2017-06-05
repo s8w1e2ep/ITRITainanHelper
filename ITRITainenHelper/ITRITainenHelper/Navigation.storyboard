@@ -26,7 +26,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <items>
                                     <navigationItem title="局處導覽" id="DfZ-tF-syO">
-                                        <barButtonItem key="leftBarButtonItem" title="Back" id="hVb-iP-zXg">
+                                        <barButtonItem key="leftBarButtonItem" image="index_back" id="hVb-iP-zXg">
                                             <connections>
                                                 <action selector="goBackMain:" destination="XaW-wy-aUJ" id="k1n-a5-k8C"/>
                                             </connections>
@@ -50,7 +50,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="gd8-Gz-RcA" kind="show" id="PKu-Ff-tP5"/>
+                                            <segue destination="84i-Uh-Imh" kind="presentation" id="cFG-6e-9UB"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -102,10 +102,69 @@
                             <outlet property="delegate" destination="gd8-Gz-RcA" id="Bkc-Jn-cov"/>
                         </connections>
                     </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cdA-Cj-Xbp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="885.60000000000002" y="160.56971514242881"/>
+        </scene>
+        <!--Navigation Detail View Controller-->
+        <scene sceneID="l9x-SF-XoY">
+            <objects>
+                <viewController id="84i-Uh-Imh" customClass="NavigationDetailViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nhd-67-tRG"/>
+                        <viewControllerLayoutGuide type="bottom" id="Hp0-tL-mDc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Pfj-KE-7KD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5an-1F-BzQ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <items>
+                                    <navigationItem title="搜尋結果" id="vfc-7H-uQS">
+                                        <barButtonItem key="leftBarButtonItem" image="index_back" id="aAR-0t-hZz">
+                                            <connections>
+                                                <action selector="goBackAction:" destination="84i-Uh-Imh" id="xUz-fb-lPN"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="07Z-6K-qAZ">
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Aic-Zy-LjF">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Aic-Zy-LjF" id="0Jg-b2-yJK">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="07Z-6K-qAZ" firstAttribute="bottom" secondItem="Hp0-tL-mDc" secondAttribute="top" id="9Ru-WK-inE"/>
+                            <constraint firstItem="07Z-6K-qAZ" firstAttribute="top" secondItem="5an-1F-BzQ" secondAttribute="bottom" id="Gsr-ex-3Ku"/>
+                            <constraint firstItem="5an-1F-BzQ" firstAttribute="trailing" secondItem="07Z-6K-qAZ" secondAttribute="trailing" id="Rcd-7T-8fJ"/>
+                            <constraint firstItem="5an-1F-BzQ" firstAttribute="top" secondItem="Pfj-KE-7KD" secondAttribute="top" id="SDN-d2-Bdk"/>
+                            <constraint firstItem="5an-1F-BzQ" firstAttribute="leading" secondItem="Pfj-KE-7KD" secondAttribute="leading" id="SNz-gR-7ZD"/>
+                            <constraint firstAttribute="trailing" secondItem="5an-1F-BzQ" secondAttribute="trailing" id="fr1-xC-IG8"/>
+                            <constraint firstItem="5an-1F-BzQ" firstAttribute="leading" secondItem="07Z-6K-qAZ" secondAttribute="leading" id="hqc-7Z-HXU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="detailTableView" destination="07Z-6K-qAZ" id="0CV-e6-SCx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eOy-eW-P0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="887.20000000000005" y="860.41979010494754"/>
         </scene>
         <!--Navigation Map View Controller-->
         <scene sceneID="Dkk-xE-Ysk">
@@ -119,13 +178,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DlQ-oO-uWc" customClass="UINavigationMap">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ID-4k-0Df">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <color key="backgroundColor" red="0.14166606299520268" green="0.67776532130798106" blue="0.23725417924329648" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="地圖模式" id="kz3-us-FOf">
+                                        <barButtonItem key="leftBarButtonItem" title="Item" image="index_back" style="plain" id="8P2-QB-jet">
+                                            <connections>
+                                                <action selector="goBackAction:" destination="cRS-f0-4hj" id="hbp-Ir-xZS"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DlQ-oO-uWc" customClass="UINavigationMap">
+                                <rect key="frame" x="0.0" y="44" width="375" height="579"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DlQ-oO-uWc" firstAttribute="top" secondItem="8ID-4k-0Df" secondAttribute="bottom" id="00i-bh-o0G"/>
+                            <constraint firstItem="8ID-4k-0Df" firstAttribute="leading" secondItem="DlQ-oO-uWc" secondAttribute="leading" id="4EV-an-8My"/>
+                            <constraint firstItem="8ID-4k-0Df" firstAttribute="trailing" secondItem="DlQ-oO-uWc" secondAttribute="trailing" id="GF6-rV-xN6"/>
+                            <constraint firstItem="8ID-4k-0Df" firstAttribute="top" secondItem="AZs-oC-g3q" secondAttribute="top" id="QWt-Qx-va8"/>
+                            <constraint firstItem="8ID-4k-0Df" firstAttribute="leading" secondItem="AZs-oC-g3q" secondAttribute="leading" id="mBp-Ja-CfT"/>
+                            <constraint firstItem="DlQ-oO-uWc" firstAttribute="centerY" secondItem="AZs-oC-g3q" secondAttribute="centerY" id="qrJ-42-wsn"/>
+                            <constraint firstAttribute="trailing" secondItem="8ID-4k-0Df" secondAttribute="trailing" id="x3C-33-1rk"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="navigationMapMap" destination="DlQ-oO-uWc" id="uhH-aG-out"/>
@@ -136,4 +219,7 @@
             <point key="canvasLocation" x="1701.5999999999999" y="160.56971514242881"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="index_back" width="50" height="50"/>
+    </resources>
 </document>

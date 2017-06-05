@@ -72,7 +72,7 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
 //            let detailVC = segue.destination
 //            
 //        }
-        let destinationViewController = segue.destination as! NavigationDetailTableViewController
+        let destinationViewController = segue.destination as! NavigationDetailViewController
         let indexPath = self.navigationTableView.indexPathForSelectedRow
         let selectedRow = indexPath?.row
         let category = self.navigationDataArray.object(at: selectedRow!) as! AdministrativeUnitCategory
