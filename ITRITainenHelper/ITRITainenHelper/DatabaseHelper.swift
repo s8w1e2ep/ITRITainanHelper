@@ -1051,7 +1051,7 @@ class DatabaseHelper {
     }
     
     func updateEdmTable(jsonObj: JSON) {
-        print("try edm")
+        //print("try edm")
         do {
             // pluck a row: if there is data
             let db = try Connection(self.db_pathName)

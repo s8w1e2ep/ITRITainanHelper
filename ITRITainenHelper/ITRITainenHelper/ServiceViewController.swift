@@ -34,7 +34,7 @@ class ServiceViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             /* first launch layout */
             setGuideLayout()
-            //defaults.set(true, forKey: "isMessageLaunchBefore")
+            defaults.set(true, forKey: "isMessageLaunchBefore")
         }
         
     }

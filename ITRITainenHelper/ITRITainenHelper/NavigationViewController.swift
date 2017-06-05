@@ -16,9 +16,10 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
     var databaseHelper = DatabaseHelper.init()
     var guideOverlay = UIView() // black frame
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationDataArray.add("yes")
+        //        self.navigationDataArray.add("yes")
         // Do any additional setup after loading the view.
         
         // load data(only at init)
@@ -35,7 +36,7 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
         } else {
             /* first launch layout */
             setGuideLayout()
-            //defaults.set(true, forKey: "isMessageLaunchBefore")
+            defaults.set(true, forKey: "isMessageLaunchBefore")
         }
         
     }
@@ -76,11 +77,16 @@ class NavigationViewController: UIViewController, UITableViewDelegate, UITableVi
     func checkClick() {
         self.guideOverlay.removeFromSuperview()
     }
-
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    @IBAction func searchForKeyword(_ sender: Any) {
+        
     }
     
     @IBAction func goBackMain(_ sender: Any) {

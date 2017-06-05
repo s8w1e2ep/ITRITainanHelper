@@ -70,6 +70,7 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         self.databaseHelper.createDB()
         
         // SQLITE: - download pictures and data
+        
         syncAllTables()
         
         /* syncing always goes first */
@@ -107,8 +108,7 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
             /* first launch layout */
             // TODO: - do something
             layoutWelcomeLayoutOne()
-            //defaults.set(true, forKey: "isAppLaunchBefore")
-
+//            defaults.set(true, forKey: "isAppLaunchBefore")
         }
         
         /* get data from edm table and set swipe image */
@@ -156,38 +156,9 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         
         // TODO: - navigation bar/item layout is not good, needed to be fixed
         // put image to title bar
-<<<<<<< HEAD
-        print(self.myNavigationItem.title!)
-        self.myNavigationItem.titleView = UIView.init(frame: CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.height/12.5))
-        let logo = UIImage.init(named: "index_logo1.png")
-        let logoImageView = UIImageView.init(frame: CGRect(x: self.navigationItem.titleView!.bounds.origin.x, y: self.navigationItem.titleView!.bounds.origin.y, width: self.navigationItem.titleView!.bounds.size.width * 1/5, height: self.navigationItem.titleView!.bounds.size.height))
-        let logoLabel = UILabel.init(frame: CGRect(x: self.navigationItem.titleView!.bounds.origin.x + self.navigationItem.titleView!.bounds.width/5, y: self.navigationItem.titleView!.bounds.origin.y, width: self.navigationItem.titleView!.bounds.size.width * 4/5, height: self.navigationItem.titleView!.bounds.size.height))
-        logoImageView.image = logo
-        logoLabel.text = Constants.MAIN_BAR_TITLE
-        self.myNavigationItem.titleView!.addSubview(logoImageView)
-        self.myNavigationItem.titleView!.addSubview(logoLabel)
-        self.myNavigationItem.titleView!.bringSubview(toFront: logoImageView)
-        self.myNavigationItem.titleView!.bringSubview(toFront: logoLabel)
-        self.myNavigationItem.titleView!.backgroundColor = UIColor.init(red: 60, green: 176, blue: 157, alpha: 1)
-        
-// <<<<<<< HEAD
-        // self-created database
-        // insertData()
-        
-        // try to read from tainan3
-//        readDataFromTainanSQLite()
-        
-        
-        self.databaseHelper = DatabaseHelper.init()
-// =======
-        // database initialization
-        self.databaseHelper = DatabaseHelper.init(name: "new_db.sqlite")
-// >>>>>>> efdf24cfc7af48095ed775ad185c109fbee874d0
-        self.databaseHelper.createDB()
-        
-        // SQLITE: - download pictures and data
-        syncAllTables()
-=======
+
+
+
 //        print(self.myNavigationItem.title!)
 //        self.myNavigationItem.titleView = UIView.init(frame: CGRect(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.size.width, height: self.view.bounds.height/12.5))
 //        let logo = UIImage.init(named: "index_logo1.png")
@@ -200,7 +171,7 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
 //        self.myNavigationItem.titleView!.bringSubview(toFront: logoImageView)
 //        self.myNavigationItem.titleView!.bringSubview(toFront: logoLabel)
 //        self.myNavigationItem.titleView!.backgroundColor = UIColor.init(red: 60, green: 176, blue: 157, alpha: 1)
->>>>>>> 610832dfe8f92fad7ef8158b26ba96e822276f0b
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -245,6 +216,29 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func videoPlay() {
+        self.syncingView.frame = self.view.bounds
+        self.syncingView.backgroundColor = UIColor.black
+        
+        // AVPlayer set up
+        let playerItem = AVPlayerItem(url: self.playerUrl)
+        self.player = AVPlayer(playerItem: playerItem)
+        self.playerLayer = AVPlayerLayer(player: self.player)
+        self.playerLayer.frame = self.view.bounds
+        NotificationCenter.default.addObserver(self, selector: #selector(self.detectPlayingEnd(sender:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
+
+        
+        let downloadingLabel = UILabel(frame: CGRect(x: self.syncingView.bounds.origin.x + self.syncingView.bounds.size.width/5, y: self.syncingView.bounds.origin.y + self.syncingView.bounds.size.height * 13/14, width: self.syncingView.bounds.size.width * 3/5, height: self.syncingView.bounds.size.height/14))
+        downloadingLabel.text = Constants.DATA_STATUS_SYNC
+        downloadingLabel.backgroundColor = UIColor.clear
+        downloadingLabel.textColor = UIColor.white
+        self.syncingView.layer.addSublayer(self.playerLayer)
+        self.syncingView.addSubview(downloadingLabel)
+        self.view.addSubview(self.syncingView)
+        // 開始播放
+        self.player.play()
     }
     
     
@@ -408,7 +402,8 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         
         // add the welcome subview
         self.view.addSubview(self.thirdWelcomeView)
-        self.view.bringSubview(toFront: self.thirdWelcomeView)    }
+        self.view.bringSubview(toFront: self.thirdWelcomeView)
+    }
     
     // 左右滑動以瀏覽內容
     func layoutInstructionViews() {
@@ -465,6 +460,12 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
     func instructionEventThree(sender: UIButton) {
         self.thirdWelcomeView.removeFromSuperview()
         // load second instruction view
+        videoPlay()
+    }
+    
+    func detectPlayingEnd(sender: Notification) {
+        // destroy current player layer
+        self.syncingView.removeFromSuperview()
         layoutInstructionViews()
     }
     
@@ -1007,16 +1008,8 @@ class ViewController: UIViewController, DataSyncerListener, NavigationMapListene
         
         for data in mobiles {
             let temp = data as! MobileApps
-<<<<<<< HEAD
-//<<<<<<< HEAD
-            //print("(", temp.appId, ", ", temp.appName!, ", ", temp.appURL!, ", ", temp.appImage!, ", ", temp.lastUpdateTime, ")")
-//=======
-            print("(", temp.appId!, ", ", temp.appName!, ", ", temp.appIOSUrl!, ", ", temp.appImage!, ", ", temp.lastUpdateTime!, ")")
-//>>>>>>> efdf24cfc7af48095ed775ad185c109fbee874d0
-=======
             print("(", temp.appId, ", ", temp.appName!, ", ", temp.appIOSUrl!, ", ", temp.appImage!, ", ", temp.lastUpdateTime, ")")
 
->>>>>>> 610832dfe8f92fad7ef8158b26ba96e822276f0b
         }
     }
     

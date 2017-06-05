@@ -17,22 +17,13 @@ class AppsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-<<<<<<< HEAD
-        let dbHelper = DatabaseHelper.init()
-        let mobileappsArray = dbHelper.queryMobileAppTable()
-        for data in mobileappsArray {
-            let temp = data as! MobileApps
-            print("(mobileapp -> appId: ", temp.appId!, ", appName: ", temp.appName!, ", appIOSUrl: ", temp.appIOSUrl!, ", appImage: ", temp.appImage!, ", lastUpdateTime: ", temp.lastUpdateTime!, ")")
-        }
-        print("yuder")
-=======
+
         let dbHelper = DatabaseHelper.init(name: "test_1.sqlite")
         self.apps = dbHelper.queryMobileAppTable()
         for _ in self.apps {
             count += 1
             
         }
->>>>>>> 610832dfe8f92fad7ef8158b26ba96e822276f0b
     }
 
     override func didReceiveMemoryWarning() {
