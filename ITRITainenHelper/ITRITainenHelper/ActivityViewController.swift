@@ -34,7 +34,7 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
         let defaults = UserDefaults.standard
         let checkFirstLaunch = defaults.bool(forKey: "isAppFirstLaunch")
         if (checkFirstLaunch == true) {
-            // is first launch
+            // is first launc
             isFirst = true
             setGuideLayout()
         } else {
