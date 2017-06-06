@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ngP-5G-eG7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -9,24 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="PMJ-JK-XwD">
-            <objects>
-                <navigationController id="ngP-5G-eG7" sceneMemberID="viewController">
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="e4Q-dJ-RvN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="ltn-tQ-hm5"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Hlh-eD-Jlj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-473" y="60"/>
-        </scene>
-        <!--台南洽公小幫手-->
+        <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="ITRITainenHelper" customModuleProvider="target" sceneMemberID="viewController">
@@ -35,16 +18,16 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" placeholder="搜尋" translatesAutoresizingMaskIntoConstraints="NO" id="76E-gb-nii">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+                                <rect key="frame" x="0.0" y="64" width="300" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9K-k7-5bF">
-                                <rect key="frame" x="300" y="0.0" width="75" height="50"/>
+                                <rect key="frame" x="300" y="64" width="75" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="75" id="RXA-4v-wHo"/>
@@ -52,10 +35,10 @@
                                 <state key="normal" image="index_search"/>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="reu-8k-AMw">
-                                <rect key="frame" x="0.0" y="249" width="375" height="334"/>
+                                <rect key="frame" x="0.0" y="365" width="375" height="282"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="334" id="MYv-eA-jZh"/>
+                                    <constraint firstAttribute="height" constant="282" id="MYv-eA-jZh"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ucS-zJ-04B">
                                     <size key="itemSize" width="100" height="120"/>
@@ -119,9 +102,21 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xxS-AQ-KSu">
-                                <rect key="frame" x="0.0" y="58" width="375" height="183"/>
+                                <rect key="frame" x="0.0" y="152" width="375" height="188"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OEN-sU-bvE">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.052947664196287519" green="0.80726522842639592" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.79871903300626157" green="0.80242703045685282" blue="0.77229961325211149" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="台南洽公小幫手" id="5Zx-pb-rxw"/>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -131,29 +126,26 @@
                             <constraint firstItem="N9K-k7-5bF" firstAttribute="trailing" secondItem="xxS-AQ-KSu" secondAttribute="trailing" id="86g-D1-e7e"/>
                             <constraint firstItem="N9K-k7-5bF" firstAttribute="leading" secondItem="76E-gb-nii" secondAttribute="trailing" id="8Vo-yn-keS"/>
                             <constraint firstAttribute="bottom" secondItem="reu-8k-AMw" secondAttribute="bottom" constant="20" symbolic="YES" id="FLD-93-Vfm"/>
-                            <constraint firstItem="reu-8k-AMw" firstAttribute="top" secondItem="xxS-AQ-KSu" secondAttribute="bottom" constant="8" symbolic="YES" id="HWP-6K-yXh"/>
-                            <constraint firstItem="76E-gb-nii" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="R60-Yw-Csa"/>
+                            <constraint firstItem="reu-8k-AMw" firstAttribute="top" secondItem="xxS-AQ-KSu" secondAttribute="bottom" constant="25" id="HWP-6K-yXh"/>
+                            <constraint firstItem="76E-gb-nii" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="R60-Yw-Csa"/>
                             <constraint firstAttribute="trailing" secondItem="N9K-k7-5bF" secondAttribute="trailing" id="YDf-67-lXs"/>
-                            <constraint firstItem="xxS-AQ-KSu" firstAttribute="top" secondItem="N9K-k7-5bF" secondAttribute="bottom" constant="8" symbolic="YES" id="jkc-d7-ecs"/>
+                            <constraint firstItem="xxS-AQ-KSu" firstAttribute="top" secondItem="N9K-k7-5bF" secondAttribute="bottom" constant="38" id="jkc-d7-ecs"/>
                             <constraint firstItem="xxS-AQ-KSu" firstAttribute="trailing" secondItem="reu-8k-AMw" secondAttribute="trailing" id="lAe-uG-llQ"/>
                             <constraint firstItem="76E-gb-nii" firstAttribute="top" secondItem="N9K-k7-5bF" secondAttribute="top" id="wv0-Xn-JdN"/>
                             <constraint firstItem="76E-gb-nii" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="z4g-Q9-fCu"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="台南洽公小幫手" id="VzZ-mw-NzT"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityView" destination="xxS-AQ-KSu" id="blo-dY-jXP"/>
                         <outlet property="functionCollection" destination="reu-8k-AMw" id="DwM-x9-iM5"/>
-                        <outlet property="myNavigationItem" destination="VzZ-mw-NzT" id="MaV-sS-ltV"/>
                         <outlet property="searchBar" destination="76E-gb-nii" id="iUW-RA-16s"/>
                         <outlet property="searchButton" destination="N9K-k7-5bF" id="8a1-wt-HlS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="405.60000000000002" y="59.820089955022496"/>
+            <point key="canvasLocation" x="399.19999999999999" y="59.820089955022496"/>
         </scene>
         <!--Edm Detail View Controller-->
         <scene sceneID="wpk-zB-xgh">

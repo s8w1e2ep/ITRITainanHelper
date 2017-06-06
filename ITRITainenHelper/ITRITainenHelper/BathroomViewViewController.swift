@@ -44,7 +44,7 @@ class BathroomViewViewController: UIViewController, UITableViewDelegate, UITable
             /* first launch layout */
             // TODO: - do something
             layoutInstructionViews()
-            //defaults.set(true, forKey: "isFacilityLaunchBefore")
+            defaults.set(true, forKey: "isFacilityLaunchBefore")
             
         }
 

@@ -25,7 +25,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
         //message layout
         let defaults = UserDefaults.standard
         let isMessageLaunchBefore = defaults.bool(forKey: "isMessageLaunchBefore")
-<<<<<<< HEAD
+
         if (isMessageLaunchBefore) {
             setGeneralLayout()
         } else {
@@ -33,16 +33,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
             isFirst = true
             setGuideLayout()
             defaults.set(true, forKey: "isMessageLaunchBefore")
-=======
-        if isMessageLaunchBefore {
-            /* normal layout */
-            setGeneralLayout()
-        } else {
-            /* first launch layout */
-            isFirst = true
-            setGuideLayout()
-            //defaults.set(true, forKey: "isMessageLaunchBefore")
->>>>>>> 610832dfe8f92fad7ef8158b26ba96e822276f0b
+
         }
     }
     
