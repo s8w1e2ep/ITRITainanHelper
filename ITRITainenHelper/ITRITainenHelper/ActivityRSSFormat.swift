@@ -12,10 +12,12 @@ class ActivityRSSFormat{
     var title: String!
     var pubDate: Date?
     var link: String!
+    var description: String!
     
-    init(title: String!, pubDate: Date?, link: String!){
+    init(title: String!, pubDate: Date?, link: String!, description: String!){
         self.title = title
         self.pubDate = pubDate
         self.link = link
+        self.description = description
     }
 }

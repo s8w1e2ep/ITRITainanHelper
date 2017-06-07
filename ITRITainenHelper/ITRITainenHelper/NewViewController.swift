@@ -10,53 +10,21 @@ import UIKit
 
 class NewViewController: UIViewController, UIWebViewDelegate {
     
-    @IBOutlet weak var webActivity: UIWebView!
+    @IBOutlet weak var Label: UILabel!
+    @IBOutlet weak var wvHtml: UIWebView!
     
-    var overlay: UIView = UIView()
-    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
-    var webLink: String! = "https://www.google.com.tw"
+    
+    var Hottitle: String! = "Titel"
+    var content: String! = "Surprise! I'm back."
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        // set overlay
-        overlay.frame = CGRect(x: 0,y: 0, width: view.frame.size.width * 0.8, height: 90)
-        overlay.center = self.view.center
-        overlay.backgroundColor = UIColor.black
-        overlay.alpha = 0.5
-        overlay.layer.cornerRadius = 10
-        overlay.clipsToBounds = true
-        // set loading indicator
-        activityIndicator.frame = CGRect(x: 0, y: 0, width: 60, height:60)
-        activityIndicator.center = CGPoint(x: overlay.frame.size.width / 2, y: overlay.frame.size.height / 2);
-        activityIndicator.hidesWhenStopped = true
-        
-        overlay.addSubview(activityIndicator)
-        view.addSubview(overlay)
-        activityIndicator.startAnimating()
-        loadWeb()
+        self.Label.numberOfLines = 0;
+        self.Label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        self.Label.text = Hottitle
+        wvHtml.loadHTMLString(content, baseURL: nil)
     }
-    
-    func loadWeb(){
-        let range =  webLink.range(of: "=")
-        let host = webLink.substring(to: (range?.lowerBound)!)
-        var data = webLink.substring(from: (range?.lowerBound)!)
-        data = data.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-        let url = URL(string: host + data)
-        let request = URLRequest(url: url!)
-        webActivity.loadRequest(request)
-    }
-    
-    func webViewDidFinishLoad(_ webView: UIWebView){
-        activityIndicator.stopAnimating()
-        self.overlay.removeFromSuperview()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     
     /*
      // MARK: - Navigation

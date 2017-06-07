@@ -21,7 +21,7 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
     let dbHelper = DatabaseHelper.init()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
     var items = [ActivityRSSFormat]()
-    var hidesitems = [ActivityRSSFormat]()
+    var hotitems = NSMutableArray()
     var overlay: UIView = UIView()// black frame
     var guideOverlay = UIView() // black frame
     var isFirst = false
@@ -44,6 +44,11 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // loadActivity()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadActivity()
     }
     
@@ -104,7 +109,7 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
         activityIndicator.startAnimating()
     }
     
-    func loadActivity(){
+    func loadAPI(){
         // call API and transfer response to rss format
         let url = URL(string: "http://www.tainan.gov.tw/tainan/rss.asp?nsub=__A4A0")!
         
@@ -112,16 +117,40 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
             FeedParser(URL: url)?.parse({ (result) in
                 DispatchQueue.main.async {
                     let list = result.rssFeed?.items!
+                    var dataStr :String!
+                    var count = Int64(0)
                     for item in list! {
-                        self.items.append(ActivityRSSFormat(title: item.title, pubDate: item.pubDate, link: item.link))
+                        dataStr = "\(String(describing: item.pubDate))"
+                        if self.dbHelper.insertOrUpdateHotTable(id: count, hotDate: dataStr, hotTitle: item.title!, hotDescription: item.description!, hotLink: item.link!, isDelete: 0) {
+                            // do something
+                        }
+                        count = count + 1
                     }
-                    print(self.items.count)
-                    self.tvActivity.reloadData()
-                    self.activityIndicator.stopAnimating()
-                    self.overlay.removeFromSuperview()
                 }
             })
         }
+    }
+    
+    func loadActivity(){
+        loadAPI()
+        hotitems = dbHelper.queryHotTable()
+        for item in self.hotitems{
+            let temp = item as! HotItem
+            if(temp.isDelete == 0){
+                let st = temp.hotDate!
+                var range = st.range(of: "(")
+                var date_format = st.substring(from: (range?.upperBound)!)
+                range = date_format.range(of: " +")
+                date_format = date_format.substring(to: (range?.lowerBound)!)
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-mm-dd hh:mm:ss"
+                let date = dateFormatter.date(from: date_format)
+                self.items.append(ActivityRSSFormat(title: temp.hotTitle, pubDate: date, link: temp.hotLink, description: temp.hotDescription))
+            }
+        }
+        self.tvActivity.reloadData()
+        self.activityIndicator.stopAnimating()
+        self.overlay.removeFromSuperview()
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -163,7 +192,8 @@ class ActivityViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "NewViewController") as! NewViewController
-        vc.webLink = items[indexPath.row].link
+        vc.title = items[indexPath.row].title
+        vc.content = items[indexPath.row].description
         show(vc, sender: self)
     }
     

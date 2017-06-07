@@ -89,7 +89,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3N7-UW-XQ2">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3N7-UW-XQ2">
                                                     <rect key="frame" x="46" y="50.5" width="260" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -174,7 +174,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="60W-Dp-0fN">
+                            <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="60W-Dp-0fN">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <color key="barTintColor" red="1" green="0.63137254899999995" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textAttributes key="titleTextAttributes">
@@ -191,27 +191,36 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8qf-4J-Xkc">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XqF-UH-zgp">
+                                <rect key="frame" x="0.0" y="64" width="375" height="60"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="hLM-03-R9l"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5F0-Sm-oDR">
+                                <rect key="frame" x="0.0" y="123" width="375" height="544"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
-                                    <outlet property="delegate" destination="oqE-96-8rX" id="6eV-gy-uU2"/>
+                                    <outlet property="delegate" destination="oqE-96-8rX" id="WyS-z3-tyc"/>
                                 </connections>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="8qf-4J-Xkc" secondAttribute="trailing" constant="-16" id="65P-K1-TNd"/>
-                            <constraint firstItem="8qf-4J-Xkc" firstAttribute="leading" secondItem="RId-RC-0GJ" secondAttribute="leadingMargin" constant="-16" id="7Mc-vR-b9l"/>
                             <constraint firstItem="60W-Dp-0fN" firstAttribute="top" secondItem="h2k-Vj-Dvf" secondAttribute="bottom" id="CaB-e5-4Qt"/>
-                            <constraint firstItem="8qf-4J-Xkc" firstAttribute="leading" secondItem="60W-Dp-0fN" secondAttribute="leading" id="RwK-YT-pBB"/>
-                            <constraint firstItem="8qf-4J-Xkc" firstAttribute="bottom" secondItem="112-PE-EdB" secondAttribute="top" id="Xia-eJ-dHE"/>
-                            <constraint firstItem="8qf-4J-Xkc" firstAttribute="top" secondItem="60W-Dp-0fN" secondAttribute="bottom" id="l8Q-gV-cHL"/>
-                            <constraint firstItem="8qf-4J-Xkc" firstAttribute="trailing" secondItem="60W-Dp-0fN" secondAttribute="trailing" id="mPt-aE-Yuo"/>
+                            <constraint firstItem="XqF-UH-zgp" firstAttribute="top" secondItem="60W-Dp-0fN" secondAttribute="bottom" id="qnI-ea-B1h"/>
+                            <constraint firstItem="XqF-UH-zgp" firstAttribute="trailing" secondItem="60W-Dp-0fN" secondAttribute="trailing" id="waH-Lh-E0J"/>
+                            <constraint firstItem="XqF-UH-zgp" firstAttribute="leading" secondItem="60W-Dp-0fN" secondAttribute="leading" id="zmT-Kz-QBA"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="webActivity" destination="8qf-4J-Xkc" id="IeF-43-eVW"/>
+                        <outlet property="Label" destination="XqF-UH-zgp" id="v4q-ZA-8Jp"/>
+                        <outlet property="wvHtml" destination="5F0-Sm-oDR" id="L88-88-QoK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tdz-op-HZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
